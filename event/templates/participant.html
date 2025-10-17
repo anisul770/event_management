@@ -1,0 +1,119 @@
+{% extends "home.html" %}
+{% block title %}Participants{% endblock %}
+{% block content %}
+<h2 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200 pb-2">Manage Participants</h2>
+
+<section class="grid md:grid-cols-2 gap-6 mb-8">
+  <!-- Add/Edit Form -->
+  <div class="bg-gradient-to-br from-green-50 to-white p-5 border border-green-200 rounded-xl shadow-sm">
+    <h3 class="text-green-700 font-semibold mb-3">
+      {% if selected %}✏️ Edit Participant{% else %}➕ Add New Participant{% endif %}
+    </h3>
+    <form method="post" class="space-y-3">
+      {% csrf_token %}
+      <input type="hidden" name="id" value="{{ selected.id }}">
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Name</label>
+        <input type="text" name="name" value="{{ selected.name|default:'' }}" required 
+               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-400">
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="email" name="email" value="{{ selected.email|default:'' }}" required 
+               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-400">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Select Events</label>
+        <div class="grid sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-2">
+          {% for e in events %}
+          <label class="inline-flex items-center gap-2 p-1 cursor-pointer hover:bg-green-50 rounded-lg">
+            <input type="checkbox" name="events" value="{{ e.id }}" 
+                   {% if selected and e in selected.events.all %}checked{% endif %}>
+            <span class="text-sm">{{ e.name }} 
+              <span class="text-xs text-gray-400">({{ e.date }})</span>
+            </span>
+          </label>
+          {% empty %}
+          <p class="text-gray-400 text-sm">No events available. Add an event first.</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 pt-2">
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+          {% if selected %}Update{% else %}+ Add Participant{% endif %}
+        </button>
+        {% if selected %}
+        <a href="{% url 'participant_page' %}" class="text-gray-600 hover:underline">Cancel</a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+
+  <!-- Stats / Quick Actions -->
+  <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 shadow-sm">
+    <h3 class="text-gray-700 font-semibold mb-3">📊 Quick Stats</h3>
+    <ul class="text-sm space-y-2">
+      <li>Total Participants: <strong class="text-blue-700">{{ participants|length }}</strong></li>
+      <li>Total Events: <strong class="text-blue-700">{{ events|length }}</strong></li>
+    </ul>
+    <a href="{% url 'event_page' %}" class="mt-4 inline-block text-blue-600 hover:underline">➡ Go to Events</a>
+  </div>
+</section>
+
+<!-- Participant Table -->
+<section>
+  <h3 class="text-lg font-semibold text-gray-700 mb-3">👥 Participant List</h3>
+  <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 shadow">
+    <table class="min-w-full text-sm">
+      <thead class="bg-green-100 text-green-900">
+        <tr>
+          <th class="py-2 px-4 text-left">Name</th>
+          <th class="py-2 px-4 text-center">Email</th>
+          <th class="py-2 px-4 text-left">Events</th>
+          <th class="py-2 px-4 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in participants %}
+        <tr class="hover:bg-green-50 transition">
+          <td class="py-2 px-4 border-b">{{ p.name }}</td>
+          <td class="py-2 px-4 border-b text-center">{{ p.email }}</td>
+          <td class="py-2 px-4 border-b">
+            {% for e in p.events.all %}
+            <span class="inline-block bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs mr-1 mb-1">
+              {{ e.name }}
+            </span>
+            {% empty %}
+            <span class="text-gray-400 text-sm">No events</span>
+            {% endfor %}
+          </td>
+          <td class="py-2 px-4 border-b text-center">
+            <a href="?edit={{ p.id }}" class="text-blue-600 hover:underline mr-2">Edit</a>
+            <a href="?delete={{ p.id }}" class="text-red-500 hover:underline">Delete</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="text-center py-4 text-gray-500">No participants found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Delete Confirmation -->
+{% if delete_item %}
+<div class="mt-8 p-6 bg-red-50 border border-red-200 rounded-xl text-center shadow">
+  <p class="mb-3 text-red-700 text-lg font-medium">⚠️ Are you sure you want to delete <strong>{{ delete_item.name }}</strong> ({{ delete_item.email }})?</p>
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="delete_confirm" value="{{ delete_item.id }}">
+    <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">Yes, Delete</button>
+    <a href="{% url 'participant_page' %}" class="ml-3 text-gray-600 hover:underline">Cancel</a>
+  </form>
+</div>
+{% endif %}
+{% endblock %}
