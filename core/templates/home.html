@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Event Management{% endblock %}</title>
+  <link rel="stylesheet" href="{% static "css/output.css" %}">
+</head>
+<body class="bg-gradient-to-b from-blue-50 to-gray-100 min-h-screen font-sans">
+  {% if request.user.is_authenticated %}
+    {% include "admin/admin_nav.html" %}
+  {% else %}
+    {% include "non_logged.html" %}
+  {% endif %}
+
+  <!-- Page container -->
+  <main class="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-3xl shadow-xl">
+    {% block content %}
+      <h1 class="text-center font-bold text-7xl mt-5 pt-5">Warm Welcome at our service</h1>
+    {% endblock content %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-10 py-4 text-center text-gray-500 text-sm">
+    <p>&copy; All rights reserved </p>
+  </footer>
+</body>
+</html>

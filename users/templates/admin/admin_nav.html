@@ -1,0 +1,20 @@
+<!-- Navbar -->
+  <nav class="bg-blue-800 shadow-lg sticky top-0 z-50">
+    <div class="mx-auto px-6 py-4 flex justify-between items-center flex-wrap">
+      <a href="{% url "home" %}" class="text-3xl font-bold text-white tracking-wide">🎉 Event Management</a>
+      <div class="space-x-4 -translate-x-24">
+        <a href="{% url 'event_page' %}" class="text-white hover:text-yellow-300 {% if request.path == '/event/events/' %}font-semibold underline{% endif %}">Events</a>
+        <a href="{% url 'participant_page' %}" class="text-white hover:text-yellow-300 {% if request.path == '/event/participants/' %}font-semibold underline{% endif %}">Participants</a>
+        <a href="{% url 'category_page' %}" class="text-white hover:text-yellow-300 {% if request.path == '/event/categories/' %}font-semibold underline{% endif %}">Categories</a>
+        <a href="{% url 'create-group' %}" class="text-white hover:text-yellow-300 {% if request.path == '/users/create_group/' %}font-semibold underline{% endif %}">Create Group</a>
+
+      </div>
+      <div class="flex gap-2 items-center">
+        <p class="text-white font-medium text-xl" >{{user.username}}</p>
+        <form method="post" action="{% url "sign-out" %}">
+            {% csrf_token %}
+            <button class="block rounded-lg px-4 py-2 text-sm text-gray-700 hover:bg-red-300 bg-gray-300 font-medium ">Logout</button>
+        </form>
+      </div>
+    </div>
+  </nav>

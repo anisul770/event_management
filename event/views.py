@@ -4,8 +4,11 @@ from event.forms import CategoryForm,EventForm,ParticipantForm
 from django.db.models import Q,Count
 from django.utils import timezone
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required,user_passes_test
 
 # ----- CATEGORY -----
+
+@login_required
 def category_page(request):
     selected, delete_item = None, None
 
@@ -21,11 +24,10 @@ def category_page(request):
         delete_item = get_object_or_404(Category, id=request.GET['delete'])
 
     # CREATE / UPDATE
-    elif request.method == 'POST' and 'delete_confirm' not in request.POST:
+    if request.method == 'POST' and 'delete_confirm' not in request.POST:
         cid = request.POST.get('id', '').strip()
         name = request.POST.get('name', '').strip()
         description = request.POST.get('description', '').strip()
-
         if cid:
             category = get_object_or_404(Category, id=cid)
             category.name = name
@@ -47,6 +49,7 @@ def category_page(request):
 
 # ----- EVENT -----
 
+@login_required
 def event_page(request):
     selected, delete_item = None, None
 
@@ -62,7 +65,7 @@ def event_page(request):
         delete_item = get_object_or_404(Event, id=request.GET['delete'])
 
     # CREATE / UPDATE
-    elif request.method == 'POST' and 'delete_confirm' not in request.POST:
+    if request.method == 'POST' and 'delete_confirm' not in request.POST:
         eid = request.POST.get('id')
         name = request.POST.get('name', '').strip()
         description = request.POST.get('description', '').strip()
@@ -107,8 +110,7 @@ def event_page(request):
     events = events.annotate(total_participants=Count('participants'))
     categories = Category.objects.all()
     total_participants = Participant.objects.count()
-
-    return render(request, 'event.html', {
+    context = {
         'events': events,
         'categories': categories,
         'selected': selected,
@@ -116,10 +118,11 @@ def event_page(request):
         'search': search,
         'category_filter': category_filter,
         'total_participants': total_participants,
-    })
+    }
+    return render(request, 'event.html', context)
 
 # Participant 
-
+@login_required
 def participant_page(request):
     selected, delete_item = None, None
 
@@ -135,7 +138,7 @@ def participant_page(request):
         delete_item = get_object_or_404(Participant, id=request.GET['delete'])
 
     # CREATE / UPDATE
-    elif request.method == 'POST' and 'delete_confirm' not in request.POST:
+    if request.method == 'POST' and 'delete_confirm' not in request.POST:
         pid = request.POST.get('id', '').strip()
         name = request.POST.get('name', '').strip()
         email = request.POST.get('email', '').strip()
@@ -162,3 +165,7 @@ def participant_page(request):
         'selected': selected,
         'delete_item': delete_item,
     })
+    
+def event_list(request):
+    events = Event.objects.select_related('category').all()
+    return render(request,'event_list.html',{'events':events})
