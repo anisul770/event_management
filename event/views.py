@@ -72,6 +72,7 @@ def event_page(request):
         date = request.POST.get('date')
         time = request.POST.get('time')
         location = request.POST.get('location', '').strip()
+        participant_ids = request.POST.getlist('participants')  # IMPORTANT: checkboxes => getlist
         category_id = request.POST.get('category')
 
         if eid:  # ✅ Updating existing
@@ -83,8 +84,9 @@ def event_page(request):
             event.location = location
             event.category_id = category_id
             event.save()
+            event.participants.set(participant_ids)
         else:  # ✅ Creating new
-            Event.objects.create(
+            e = Event.objects.create(
                 name=name,
                 description=description,
                 date=date,
@@ -92,7 +94,7 @@ def event_page(request):
                 location=location,
                 category_id=category_id
             )
-
+            e.participants.set(participant_ids)
         return redirect('event_page')
 
     # LIST + SEARCH
@@ -106,7 +108,7 @@ def event_page(request):
     if category_filter:
         events = events.filter(category_id=category_filter)
 
-    # No property conflict — rename annotation
+    # No property conflict — rename annotationszd
     events = events.annotate(total_participants=Count('participants'))
     categories = Category.objects.all()
     total_participants = Participant.objects.count()
@@ -140,19 +142,25 @@ def participant_page(request):
     # CREATE / UPDATE
     if request.method == 'POST' and 'delete_confirm' not in request.POST:
         pid = request.POST.get('id', '').strip()
-        name = request.POST.get('name', '').strip()
+        first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
         email = request.POST.get('email', '').strip()
         event_ids = request.POST.getlist('events')  # IMPORTANT: checkboxes => getlist
 
         if pid:
             p = get_object_or_404(Participant, id=pid)
-            p.name = name
+            p.first_name = first_name
+            p.last_name = last_name
             p.email = email
             p.save()
             p.events.set(event_ids)
         else:
-            p = Participant.objects.create(name=name, email=email)
-            p.events.set(event_ids)
+            try:
+                p = Participant.objects.create(first_name=first_name,last_name=last_name, email=email)
+                p.events.set(event_ids)
+            except Exception as e:
+                messages.error(request,"Email already Exist")
+                return redirect('participant_page')
         return redirect('participant_page')
 
     # LIST

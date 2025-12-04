@@ -10,6 +10,17 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+class Participant(models.Model):
+    """Represents an individual attending one or more events."""
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100,blank=True)
+    email = models.EmailField(unique=True)
+
+    @property
+    def total_events(self):
+        """Returns number of events the participant is attending."""
+        return self.events.count()
+
 
 class Event(models.Model):
     """Main event model linking to Category and Participants."""
@@ -18,10 +29,10 @@ class Event(models.Model):
     date = models.DateField()
     time = models.TimeField()
     location = models.CharField(max_length=200, blank=True)
+    participants = models.ManyToManyField(Participant,related_name="events", blank=True)
     category = models.ForeignKey(
         Category,
-        on_delete=models.CASCADE,
-        related_name="events"
+        on_delete=models.CASCADE
     )
 
     def __str__(self):
@@ -37,17 +48,3 @@ class Event(models.Model):
         """Returns number of participants for this event."""
         return self.participants.count()
 
-
-class Participant(models.Model):
-    """Represents an individual attending one or more events."""
-    name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    events = models.ManyToManyField(Event,related_name="participants", blank=True)
-
-    def __str__(self):
-        return self.name
-
-    @property
-    def total_events(self):
-        """Returns number of events the participant is attending."""
-        return self.events.count()

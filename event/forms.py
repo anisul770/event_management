@@ -4,12 +4,12 @@ from event.models import Event, Participant, Category
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = ['name', 'description', 'date', 'time', 'location', 'category']
+        fields = ['name', 'description', 'date', 'time', 'location', 'participants','category']
 
 class ParticipantForm(forms.ModelForm):
     class Meta:
         model = Participant
-        fields = ['name', 'email', 'events']
+        fields = ['first_name','last_name', 'email']
 
 class CategoryForm(forms.ModelForm):
     class Meta:
