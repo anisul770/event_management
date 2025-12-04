@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -10,18 +11,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-class Participant(models.Model):
-    """Represents an individual attending one or more events."""
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100,blank=True)
-    email = models.EmailField(unique=True)
-
-    @property
-    def total_events(self):
-        """Returns number of events the participant is attending."""
-        return self.events.count()
-
-
 class Event(models.Model):
     """Main event model linking to Category and Participants."""
     name = models.CharField(max_length=200)
@@ -29,7 +18,7 @@ class Event(models.Model):
     date = models.DateField()
     time = models.TimeField()
     location = models.CharField(max_length=200, blank=True)
-    participants = models.ManyToManyField(Participant,related_name="events", blank=True)
+    participants = models.ManyToManyField(User,related_name="events", blank=True)
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE

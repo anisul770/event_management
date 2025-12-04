@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from event.models import Category, Event, Participant
-from event.forms import CategoryForm,EventForm,ParticipantForm
+from event.models import Category, Event
+from event.forms import CategoryForm,EventForm
 from django.db.models import Q,Count
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required,user_passes_test
+from django.contrib.auth.models import User
 
 # ----- CATEGORY -----
 
@@ -111,7 +112,7 @@ def event_page(request):
     # No property conflict — rename annotationszd
     events = events.annotate(total_participants=Count('participants'))
     categories = Category.objects.all()
-    total_participants = Participant.objects.count()
+    total_participants = User.objects.count()
     context = {
         'events': events,
         'categories': categories,
@@ -130,14 +131,14 @@ def participant_page(request):
 
     # DELETE
     if 'delete_confirm' in request.POST:
-        Participant.objects.filter(id=request.POST['delete_confirm']).delete()
+        User.objects.filter(id=request.POST['delete_confirm']).delete()
         return redirect('participant_page')
 
     # GET edit/delete actions
     if 'edit' in request.GET:
-        selected = get_object_or_404(Participant, id=request.GET['edit'])
+        selected = get_object_or_404(User, id=request.GET['edit'])
     elif 'delete' in request.GET:
-        delete_item = get_object_or_404(Participant, id=request.GET['delete'])
+        delete_item = get_object_or_404(User, id=request.GET['delete'])
 
     # CREATE / UPDATE
     if request.method == 'POST' and 'delete_confirm' not in request.POST:
@@ -148,7 +149,7 @@ def participant_page(request):
         event_ids = request.POST.getlist('events')  # IMPORTANT: checkboxes => getlist
 
         if pid:
-            p = get_object_or_404(Participant, id=pid)
+            p = get_object_or_404(User, id=pid)
             p.first_name = first_name
             p.last_name = last_name
             p.email = email
@@ -156,7 +157,7 @@ def participant_page(request):
             p.events.set(event_ids)
         else:
             try:
-                p = Participant.objects.create(first_name=first_name,last_name=last_name, email=email)
+                p = User.objects.create(first_name=first_name,last_name=last_name, email=email)
                 p.events.set(event_ids)
             except Exception as e:
                 messages.error(request,"Email already Exist")
@@ -164,7 +165,7 @@ def participant_page(request):
         return redirect('participant_page')
 
     # LIST
-    participants = Participant.objects.prefetch_related('events').all()
+    participants = User.objects.prefetch_related('events').all()
     events = Event.objects.select_related('category').all()
 
     return render(request, 'participant.html', {
