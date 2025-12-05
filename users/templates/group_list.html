@@ -1,0 +1,64 @@
+{% extends "home.html" %}
+{% block title %}Group List{% endblock title %}
+
+{% block content %}
+
+<!-- Messages -->
+{% if messages %}
+<div class="mb-6">
+    {% for m in messages %}
+    <div class="p-3 rounded-lg text-white font-medium text-center 
+        {% if m.tags == 'error' %}bg-red-500{% elif m.tags == 'success' %}bg-green-500{% else %}bg-blue-500{% endif %}">
+        {{ m }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+<h1 class="text-4xl font-bold mb-6 text-center">Group List</h1>
+<div class="overflow-x-auto">
+    <table class="min-w-full bg-white shadow rounded-lg">
+        <thead>
+            <tr class="bg-indigo-600 text-white text-left">
+                <th class="py-3 px-6">#</th>
+                <th class="py-3 px-6">Group Name</th>
+                <th class="py-3 px-6">Permissions</th>
+                <th class="py-3 px-6 text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+            {% for group in groups %}
+            <tr class="hover:bg-gray-100">
+                <td class="py-4 px-6">{{ forloop.counter }}</td>
+                <td class="py-4 px-6 font-semibold">{{ group.name }}</td>
+                <td class="py-4 px-6 text-gray-700">
+                    {% for perm in group.permissions.all %}
+                        <span class="inline-block bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded-full mr-1 mb-1">
+                            {{ perm.name }}
+                        </span>
+                    {% empty %}
+                        <span class="text-gray-400">No Permissions</span>
+                    {% endfor %}
+                </td>
+                <td class="py-4 px-6 text-center">
+                    <!-- Delete Form -->
+                    <form method="POST" class="inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="group_id" value="{{ group.id }}">
+                        <button type="submit" name="delete_group" 
+                                class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="py-6 text-center text-gray-500">
+                    No groups available.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

@@ -1,15 +1,54 @@
 {% extends "home.html" %}
 {% block content %}
-    <div class="grid grid-cols-4 gap-3">
-        {% for event in events %}
-            <div class="text-center shadow grid-cols-3 rounded-lg bg-indigo-200 border-2 border-cyan-400">
-                <h1 class='font-bold'>{{event.name}}</h1>
-                <p>{{event.category}}</p>
-                <p>{{event.date}}</p>
-                <p>{{event.time}}</p>
-                <p>Participants: {{event.participant_count}}</p>
-                
-           </div>
-        {% endfor %}
+{% if messages %}
+<div class="max-w-3xl mx-auto mb-6">
+    {% for m in messages %}
+        <div class="p-3 rounded-lg text-white text-center font-medium {% if m.tags == 'error' %}bg-red-500{% elif m.tags == 'success' %}bg-green-500{% else %}bg-blue-500{% endif %}">{{ m }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Event Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
+    {% for event in events %}
+    <div class="rounded-2xl shadow-md bg-white border border-gray-200 overflow-hidden hover:shadow-xl transition">
+        <!-- Card Header -->
+        <div class="bg-indigo-600 text-white p-4">
+            <h1 class="font-bold text-xl">{{ event.name }}</h1>
+        </div>
+        <!-- Card Body -->
+        <div class="p-4 text-gray-700 space-y-1">
+            <p><span class="font-semibold">Category:</span> {{ event.category }}</p>
+            <p><span class="font-semibold">Date:</span> {{ event.date }}</p>
+            <p><span class="font-semibold">Time:</span> {{ event.time }}</p>
+            <p><span class="font-semibold">Participants:</span> {{ event.participant_count }}</p>
+        </div>
+        <!-- Button -->
+        <div class="p-4 text-center">
+            {% if request.user in event.participants.all %}
+            <!-- Going + Cancel Button -->
+            <div class="space-y-2">
+                <button class="w-full py-2 px-4 bg-green-500 text-white rounded-lg font-semibold shadow cursor-not-allowed">
+                    ✔ Going
+                </button>
+
+                <a href="{% url 'cancel-response' event.id %}">
+                    <button class="w-full py-2 px-4 bg-red-500 text-white rounded-lg font-semibold shadow hover:bg-red-600 transition">
+                    Cancel
+                    </button>
+                </a>
+            </div>
+
+            {% else %}
+            <!-- Interested Button -->
+                <a href="{% url 'respond' event.id %}">
+                    <button class="w-full py-2 px-4 bg-blue-600 text-white rounded-lg font-semibold shadow hover:bg-blue-700 transition">
+                    Interested
+                    </button>
+                </a>
+            {% endif %}
+        </div>
     </div>
+    {% endfor %}
+</div>
 {% endblock content %}

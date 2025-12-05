@@ -6,10 +6,12 @@ from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib.auth.models import User
+from core.templatetags.role_filters import is_admin,is_organizer,is_participant,is_admin_or_organizer
 
 # ----- CATEGORY -----
 
 @login_required
+@user_passes_test(is_admin_or_organizer,login_url='no-permission')
 def category_page(request):
     selected, delete_item = None, None
 
@@ -51,6 +53,7 @@ def category_page(request):
 # ----- EVENT -----
 
 @login_required
+@user_passes_test(is_admin_or_organizer,login_url='no-permission')
 def event_page(request):
     selected, delete_item = None, None
 
@@ -75,6 +78,7 @@ def event_page(request):
         location = request.POST.get('location', '').strip()
         participant_ids = request.POST.getlist('participants')  # IMPORTANT: checkboxes => getlist
         category_id = request.POST.get('category')
+        img_file = request.FILES.get('img')
 
         if eid:  # ✅ Updating existing
             event = get_object_or_404(Event, id=eid)
@@ -84,6 +88,8 @@ def event_page(request):
             event.time = time
             event.location = location
             event.category_id = category_id
+            if img_file:  # <-- only update if a new image is uploaded
+                event.img = img_file
             event.save()
             event.participants.set(participant_ids)
         else:  # ✅ Creating new
@@ -93,7 +99,8 @@ def event_page(request):
                 date=date,
                 time=time,
                 location=location,
-                category_id=category_id
+                category_id=category_id,
+                img=img_file 
             )
             e.participants.set(participant_ids)
         return redirect('event_page')
@@ -126,6 +133,7 @@ def event_page(request):
 
 # Participant 
 @login_required
+@user_passes_test(is_admin,login_url='no-permission')
 def participant_page(request):
     selected, delete_item = None, None
 
@@ -143,6 +151,7 @@ def participant_page(request):
     # CREATE / UPDATE
     if request.method == 'POST' and 'delete_confirm' not in request.POST:
         pid = request.POST.get('id', '').strip()
+        username = request.POST.get('username', '').strip()
         first_name = request.POST.get('first_name', '').strip()
         last_name = request.POST.get('last_name', '').strip()
         email = request.POST.get('email', '').strip()
@@ -150,6 +159,7 @@ def participant_page(request):
 
         if pid:
             p = get_object_or_404(User, id=pid)
+            p.username = username
             p.first_name = first_name
             p.last_name = last_name
             p.email = email
@@ -157,7 +167,9 @@ def participant_page(request):
             p.events.set(event_ids)
         else:
             try:
-                p = User.objects.create(first_name=first_name,last_name=last_name, email=email)
+                p = User.objects.create(username=username,first_name=first_name,last_name=last_name, email=email)
+                p.is_active = False
+                p.save()
                 p.events.set(event_ids)
             except Exception as e:
                 messages.error(request,"Email already Exist")

@@ -17,8 +17,9 @@ class Event(models.Model):
     description = models.TextField(blank=True)
     date = models.DateField()
     time = models.TimeField()
+    img = models.ImageField(upload_to='event_asset',blank=True,null=True)
     location = models.CharField(max_length=200, blank=True)
-    participants = models.ManyToManyField(User,related_name="events", blank=True)
+    participants = models.ManyToManyField(User,related_name="events", blank=True,default='event_asset/default.jpg')
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE

@@ -27,14 +27,19 @@
     <h3 class="text-green-700 font-semibold mb-3">
       {% if selected %}✏️ Edit Event{% else %}➕ Add New Event{% endif %}
     </h3>
-    <form method="post" class="space-y-3">
+    <form method="post" class="space-y-3" enctype='multipart/form-data'>
       {% csrf_token %}
       <input type="hidden" name="id" value="{{ selected.id }}">
       <label class="block text-sm font-medium text-gray-700">Name</label>
       <input type="text" name="name" value="{{ selected.name|default:'' }}" required class="w-full border border-gray-300 rounded-lg px-3 py-2">
       <label class="block text-sm font-medium text-gray-700">Description</label>
       <textarea name="description" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2">{{ selected.description|default:'' }}</textarea>
-
+      <label class="block text-sm font-medium text-gray-700">Event Image</label>
+      {% if selected.img %}
+        <img src="{{ selected.img.url }}" alt="Event Image" class="w-40 h-40 object-cover mb-2">
+      {% endif %}
+      <input type="file" name="img" class="w-full border rounded-lg px-3 py-2">
+      
       <div class="grid md:grid-cols-2 gap-3">
         <div>
           <label class="block text-sm font-medium">Date</label>
@@ -56,7 +61,6 @@
         <option value="{{ c.id }}" {% if selected and selected.category.id == c.id %}selected{% endif %}>{{ c.name }}</option>
         {% endfor %}
       </select>
-
       <div class="flex items-center gap-3 pt-2">
         <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
           {% if selected %}Update{% else %}+ Add Event{% endif %}

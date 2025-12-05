@@ -1,0 +1,83 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>No Permission — Access Denied</title>
+  <link rel="stylesheet" href="{% static "css/output.css" %}">
+  <meta name="description" content="Access denied — you don't have permission to view this page." />
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 flex items-center justify-center p-6">
+  <main role="main" class="max-w-4xl w-full mx-auto bg-slate-900/60 backdrop-blur-md border border-slate-800 rounded-2xl shadow-2xl overflow-hidden">
+    <div class="md:flex">
+      <!-- Illustration / Left column -->
+      <div class="md:w-1/2 p-10 flex items-center justify-center bg-gradient-to-b from-slate-800 to-slate-900">
+        <div class="text-center">
+          <!-- Simple SVG lock illustration -->
+          <svg class="mx-auto mb-6 w-40 h-40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="2" y="26" width="60" height="36" rx="4" fill="url(#g)" />
+            <path d="M20 26V18a12 12 0 0 1 24 0v8" stroke="#0ea5a4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="32" cy="44" r="4" fill="#0ea5a4" />
+            <defs>
+              <linearGradient id="g" x1="32" y1="26" x2="32" y2="62" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#0f1724" offset="0" />
+                <stop stop-color="#0b1220" offset="1" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <h1 class="text-3xl font-semibold mb-2">Access Denied</h1>
+          <p class="text-slate-400">You don't have permission to view this page.</p>
+        </div>
+      </div>
+
+      <!-- Content / Right column -->
+      <div class="md:w-1/2 p-10">
+        <div class="space-y-6">
+          <div>
+            <h2 class="text-2xl font-bold">No Permission</h2>
+            <p class="mt-2 text-slate-400">If you think this is a mistake, please contact your administrator or request access.</p>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-3">
+            <a href="/" class="inline-flex items-center justify-center px-5 py-3 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500" aria-label="Go back to home">
+              ← Back to home
+            </a>
+
+            <a href="mailto:support@example.com?subject=Access%20Request%20—%20No%20Permission" class="inline-flex items-center justify-center px-5 py-3 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-100 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500" aria-label="Contact support">
+              Contact support
+            </a>
+          </div>
+
+          <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700">
+            <p class="text-sm text-slate-400">Quick actions</p>
+            <ul class="mt-3 grid grid-cols-1 gap-2 text-sm">
+              <li class="flex items-center justify-between">
+                <span>Request access</span>
+                <button onclick="requestAccess()" class="ml-3 px-3 py-1 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white text-sm">Request</button>
+              </li>
+              <li class="flex items-center justify-between">
+                <span>Sign in with another account</span>
+                <a href="{% url "sign-in" %}" class="ml-3 px-3 py-1 rounded-md border border-slate-700 hover:bg-slate-800 text-slate-100 text-sm">Sign in</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="text-xs text-slate-500">Error code: <span class="font-mono text-slate-300">403</span></div>
+
+          <div class="pt-2 text-sm text-slate-400">If you're an admin and want to customize this page, update <span class="font-mono text-slate-300">/templates/no-permission.html</span>.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function requestAccess() {
+      // Simple placeholder behaviour — replace with real API call
+      if (confirm('Send an access request to the site administrator?')) {
+        alert('Request sent. An administrator will contact you.');
+      }
+    }
+  </script>
+</body>
+</html>
