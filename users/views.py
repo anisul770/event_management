@@ -32,7 +32,6 @@ def sign_in(request):
     form = LoginForm()
     if request.method == "POST":
         form = LoginForm(data=request.POST)
-        print(form)
         if form.is_valid():
             user = form.get_user()
             login(request,user)
@@ -52,7 +51,7 @@ def activate_user(request,user_id,token):
         user = User.objects.get(id=user_id)
         if default_token_generator.check_token(user,token):
             user.is_active = True
-            if not user.has_usable_password():
+            if not user.password or not user.has_usable_password():
                 user.set_password('12345')  
             user.save()
             return redirect('sign-in')
@@ -89,6 +88,7 @@ def assign_role(request,user_id):
     return render(request,'admin/assign_role.html',{'form': form})
 
 @login_required
+@user_passes_test(is_participant,login_url='no-permission')
 def respond(request, e_id):
     event = get_object_or_404(Event, id=e_id)
     user = request.user

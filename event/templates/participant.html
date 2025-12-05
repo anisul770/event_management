@@ -76,7 +76,7 @@
   <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 shadow-sm">
     <h3 class="text-gray-700 font-semibold mb-3">📊 Quick Stats</h3>
     <ul class="text-sm space-y-2">
-      <li>Total Participants: <strong class="text-blue-700">{{ participants|length }}</strong></li>
+      <li>Total Participants: <strong class="text-blue-700">{{participants|length|add:"-1"}}</strong></li>
       <li>Total Events: <strong class="text-blue-700">{{ events|length }}</strong></li>
     </ul>
     <a href="{% url 'event_page' %}" class="mt-4 inline-block text-blue-600 hover:underline">➡ Go to Events</a>
