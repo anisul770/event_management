@@ -27,9 +27,9 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = []
-# CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com','http://127.0.0.1:8000']
+ALLOWED_HOSTS = ['*'] #for render
+# ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com','http://127.0.0.1:8000']
 
 # Application definition
 
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware', #for render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -61,6 +62,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
+        # 'DIRS': [BASE_DIR / 'templates'], #for render
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,26 +87,29 @@ WSGI_APPLICATION = 'event_management.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         # Replace this value with your local database's connection string.
-#         default='postgresql://event_management_db_3j9z_user:sdSonDPBOdxHXx5Zi6jp4lLVjapMpps6@dpg-d3p7c02li9vc73cs1qb0-a.oregon-postgres.render.com/event_management_db_3j9z',
-#         conn_max_age=600
-#     )
-# }
+# for render
+DATABASES = {
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgresql://event_management_db_3ajq_user:V5knFLB7xnMfo5NFMg1leLVZBzv3iQo7@dpg-d4pn3qeuk2gs73f8k800-a.oregon-postgres.render.com/event_management_db_3ajq',
+        conn_max_age=600
+    )
+}
+
+
 
 # For Postgres
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME',default=''),
-        'USER': config('DB_USER',default=''),
-        'PASSWORD': config('DB_PASSWORD',default=''),
-        'HOST': config('DB_HOST',default='localhost'),
-        'PORT': config('DB_PORT',cast=int)
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': config('DB_NAME',default=''),
+#         'USER': config('DB_USER',default=''),
+#         'PASSWORD': config('DB_PASSWORD',default=''),
+#         'HOST': config('DB_HOST',default='localhost'),
+#         'PORT': config('DB_PORT',cast=int)
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -141,10 +146,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-
+# STATIC_ROOT = BASE_DIR / 'staticfiles' #for render
 STATICFILES_DIRS = [
     BASE_DIR /'static'
 ]
+
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage" # for render
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

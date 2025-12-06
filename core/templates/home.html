@@ -3,11 +3,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}Event Management{% endblock %}</title>
-  <link rel="stylesheet" href="{% static 'css/output.css' %}">
+  <link rel="stylesheet" href="{% static 'css/output.css' %}" />
 </head>
+
 <body class="bg-gradient-to-b from-blue-50 to-gray-100 min-h-screen font-sans">
 
   <!-- Navigation -->
@@ -25,58 +26,80 @@
     {% include "non_logged.html" %}
   {% endif %}
 
-  {% block hero %} {% endblock hero %}
+  {% block hero %}{% endblock hero %}
+
   <!-- Main Content -->
-  <main class="max-w-6xl mx-auto mt-16 px-6">
+  <main class="max-w-6xl mx-auto mt-16 px-4 sm:px-6 lg:px-8">
     {% block content %}
-    <!-- Example Feature Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      
+
+    <!-- Feature Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+
+      <!-- Card 1 -->
       <div class="bg-white rounded-3xl shadow-lg p-6 text-center hover:shadow-2xl transition">
-        <div class="bg-indigo-100 w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4">
-          <img src="media/default.jpg" alt="Events" class="w-30 h-20 rounded-full scale-120">
+        <div class="bg-indigo-100 w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-4 overflow-hidden">
+          <img src="media/default.jpg" alt="Events"
+            class="w-full h-full object-cover" />
         </div>
-        <h3 class="text-2xl font-bold mb-2">Upcoming Events</h3>
-        <p class="text-gray-600 mb-4">Browse all events and find your perfect match.</p>
-        <a href="{% url 'event-list' %}" class="text-indigo-600 font-semibold hover:underline">View Events →</a>
+        <h3 class="text-xl sm:text-2xl font-bold mb-2">Upcoming Events</h3>
+        <p class="text-gray-600 mb-4 text-sm sm:text-base">
+          Browse all events and find your perfect match.
+        </p>
+        <a href="{% url 'event-list' %}" class="text-indigo-600 font-semibold hover:underline">
+          View Events →
+        </a>
       </div>
 
+      <!-- Card 2 -->
       <div class="bg-white rounded-3xl shadow-lg p-6 text-center hover:shadow-2xl transition">
-        <div class="bg-indigo-100 w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4">
-          <img src="media/default.jpg" alt="Events" class="w-30 h-20 rounded-full scale-120">
+        <div class="bg-indigo-100 w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-4 overflow-hidden">
+          <img src="media/default.jpg" alt="Events"
+            class="w-full h-full object-cover" />
         </div>
-        <h3 class="text-2xl font-bold mb-2">Join Events</h3>
-        <p class="text-gray-600 mb-4">Show your interest and manage your participation easily.</p>
-        <a href="{% url 'event-list' %}" class="text-indigo-600 font-semibold hover:underline">Get Started →</a>
+        <h3 class="text-xl sm:text-2xl font-bold mb-2">Join Events</h3>
+        <p class="text-gray-600 mb-4 text-sm sm:text-base">
+          Show your interest and manage your participation easily.
+        </p>
+        <a href="{% url 'event-list' %}" class="text-indigo-600 font-semibold hover:underline">
+          Get Started →
+        </a>
       </div>
 
+      <!-- Card 3 -->
       <div class="bg-white rounded-3xl shadow-lg p-6 text-center hover:shadow-2xl transition">
-        <div class="bg-indigo-100 w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4">
-          <img src="media/default.jpg" alt="Events" class="w-30 h-20 rounded-full scale-120">
+        <div class="bg-indigo-100 w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-4 overflow-hidden">
+          <img src="media/default.jpg" alt="Events"
+            class="w-full h-full object-cover" />
         </div>
-        <h3 class="text-2xl font-bold mb-2">Organize Events</h3>
-        <p class="text-gray-600 mb-4">Create and manage your events seamlessly as an organizer.</p>
-        <a href="{% url 'event_page' %}" class="text-indigo-600 font-semibold hover:underline">Create Event →</a>
+        <h3 class="text-xl sm:text-2xl font-bold mb-2">Organize Events</h3>
+        <p class="text-gray-600 mb-4 text-sm sm:text-base">
+          Create and manage your events seamlessly as an organizer.
+        </p>
+        <a href="{% url 'event_page' %}" class="text-indigo-600 font-semibold hover:underline">
+          Create Event →
+        </a>
       </div>
 
     </div>
+
     {% endblock content %}
   </main>
 
   <!-- Footer -->
-  <footer class="mt-20 py-8 bg-gray-100 text-center text-gray-600">
+  <footer class="mt-20 py-8 bg-gray-100 text-center text-gray-600 text-sm sm:text-base">
     <p>&copy; {{ now|date:"Y" }} Event Management Platform. All rights reserved.</p>
     <p class="mt-2">Made with ❤️ using Django & Tailwind CSS</p>
   </footer>
 
-  <!-- JS for dropdown menu -->
+  <!-- Dropdown Script -->
   <script>
     const menuButton = document.getElementById("user-menu-button");
-    if(menuButton){
+    if (menuButton) {
       menuButton.addEventListener("click", () => {
         document.getElementById("user-menu").classList.toggle("hidden");
       });
     }
   </script>
+
 </body>
 </html>
