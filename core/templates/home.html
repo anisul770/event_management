@@ -93,13 +93,41 @@
 
   <!-- Dropdown Script -->
   <script>
-    const menuButton = document.getElementById("user-menu-button");
-    if (menuButton) {
+  const mobileToggle = document.getElementById("mobile-menu-toggle");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const menuButton = document.getElementById("user-menu-button");
+  const adminToggle = document.getElementById("admin-mobile-toggle");
+  const adminMenu = document.getElementById("admin-mobile-menu");
+  const userMenu = document.getElementById("user-menu");
+  const toggleBtn = document.getElementById("mobile-toggle");
+  if (menuButton) {
       menuButton.addEventListener("click", () => {
         document.getElementById("user-menu").classList.toggle("hidden");
       });
     }
+  if (mobileToggle) {
+    mobileToggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+  }
+   if (adminToggle) {
+    adminToggle.addEventListener("click", () => {
+      adminMenu.classList.toggle("hidden");
+    });
+  }
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+  }
+  if (userMenuBtn) {
+    userMenuBtn.addEventListener("click", () => {
+      userMenu.classList.toggle("hidden");
+    });
+  }
+  document.getElementById("mobile-menu-btn").onclick = function () {
+    document.getElementById("nav-links").classList.toggle("hidden");
+  };
   </script>
-
 </body>
 </html>

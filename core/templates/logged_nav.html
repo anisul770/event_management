@@ -52,22 +52,3 @@
   </div>
 </nav>
 
-<script>
-  // Mobile menu toggle
-  const mobileToggle = document.getElementById("mobile-menu-toggle");
-  const mobileMenu = document.getElementById("mobile-menu");
-
-  if (mobileToggle) {
-    mobileToggle.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
-    });
-  }
-
-  // Avatar dropdown
-  const menuButton = document.getElementById("user-menu-button");
-  if (menuButton) {
-    menuButton.addEventListener("click", () => {
-      document.getElementById("user-menu").classList.toggle("hidden");
-    });
-  }
-</script>
