@@ -1,5 +1,5 @@
 from django.urls import path
-from users.views import sign_up,sign_in,sign_out,activate_user,create_group,assign_role,respond,cancel_response,group_list,CustomLoginView,GroupView,CustomSignUp,profile,EditProfileView,ProfileView,ChangePassword,CustomPasswordResetView,CustomPasswordResetConfirmView
+from users.views import sign_up,sign_in,sign_out,activate_user,create_group,assign_role,respond,cancel_response,group_list,CustomLoginView,GroupView,CustomSignUp,profile,EditProfileView,ProfileView,ChangePassword,CustomPasswordResetView,CustomPasswordResetConfirmView,CreateGroupView
 from django.contrib.auth.views import LogoutView,PasswordChangeDoneView
 
 urlpatterns = [
@@ -10,7 +10,8 @@ urlpatterns = [
     # path('sign_out/',sign_out,name='sign-out'),
     path('sign_out/',LogoutView.as_view(),name='sign-out'),
     path('activate/<int:user_id>/<str:token>/',activate_user),
-    path('create_group/',create_group,name='create-group'),
+    # path('create_group/',create_group,name='create-group'),
+    path('create_group/',CreateGroupView.as_view(),name='create-group'),
     path('assign_role/<int:user_id>/',assign_role,name='assign-role'),
     path('respond/<int:e_id>/',respond,name='respond'),
     path('cancel/<int:e_id>/', cancel_response, name='cancel-response'),
