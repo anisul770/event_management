@@ -29,9 +29,9 @@ DEBUG = True
 # DEBUG = False
 
 AUTH_USER_MODEL = 'users.CustomUser'
-# ALLOWED_HOSTS = ['*'] #for render
-ALLOWED_HOSTS = []
-# CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com','http://127.0.0.1:8000']
+ALLOWED_HOSTS = ['*'] #for render
+# ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com','http://127.0.0.1:8000']
 
 # Application definition
 
@@ -97,13 +97,13 @@ WSGI_APPLICATION = 'event_management.wsgi.application'
 # }
 
 # for render
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         # Replace this value with your local database's connection string.
-#         default='postgresql://event_management_db_3ajq_user:V5knFLB7xnMfo5NFMg1leLVZBzv3iQo7@dpg-d4pn3qeuk2gs73f8k800-a.oregon-postgres.render.com/event_management_db_3ajq',
-#         conn_max_age=600
-#     )
-# }
+DATABASES = {
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgresql://event_management_db_3ajq_user:V5knFLB7xnMfo5NFMg1leLVZBzv3iQo7@dpg-d4pn3qeuk2gs73f8k800-a.oregon-postgres.render.com/event_management_db_3ajq',
+        conn_max_age=600
+    )
+}
 
 
 
@@ -180,7 +180,8 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 
-FRONTEND_URL = 'http://127.0.0.1:8000'
+# FRONTEND_URL = 'http://127.0.0.1:8000'
+FRONTEND_URL = 'https://event-management-1zs9.onrender.com/'
 
 LOGIN_URL = 'sign-in'
 
