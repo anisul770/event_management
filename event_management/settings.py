@@ -110,7 +110,7 @@ DATABASES = {
 # For Postgres
 
 # DATABASES = {
-#     'default': {git 
+#     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': config('DB_NAME',default=''),
 #         'USER': config('DB_USER',default=''),
