@@ -166,13 +166,13 @@ def participant_page(request):
             p.last_name = last_name
             p.email = email
             p.save()
-            p.events.set(event_ids)
+            p.event_set.set(event_ids)
         else:
             try:
                 p = User.objects.create(username=username,first_name=first_name,last_name=last_name, email=email)
                 p.is_active = False
                 p.save()
-                p.events.set(event_ids)
+                p.event_set.set(event_ids)
             except Exception as e:
                 messages.error(request,"Email already Exist")
                 return redirect('participant_page')

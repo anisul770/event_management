@@ -106,7 +106,7 @@
             <td class="py-2 px-4 border-b">{{ p.first_name }} {{ p.last_name }}</td>
             <td class="py-2 px-4 border-b text-center">{{ p.email }}</td>
             <td class="py-2 px-4 border-b">
-              {% for e in p.events.all %}
+              {% for e in p.event_set.all %}
               <span class="inline-block bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs mr-1 mb-1">
                 {{ e.name }}
               </span>
