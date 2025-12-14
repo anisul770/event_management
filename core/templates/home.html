@@ -17,10 +17,8 @@
       {% include "admin/admin_nav.html" %}
     {% elif request.user|is_organizer %}
       {% include "organizer/organizer_nav.html" %}
-    {% elif request.user|is_participant %}
-      {% include "participant/participant_nav.html" %}
     {% else %}
-      {% include "logged_nav.html" %}
+      {% include "participant/participant_nav.html" %}
     {% endif %}
   {% else %}
     {% include "non_logged.html" %}
