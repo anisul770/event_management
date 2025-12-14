@@ -109,16 +109,16 @@ DATABASES = {
 
 # For Postgres
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME',default=''),
-        'USER': config('DB_USER',default=''),
-        'PASSWORD': config('DB_PASSWORD',default=''),
-        'HOST': config('DB_HOST',default='localhost'),
-        'PORT': config('DB_PORT',cast=int)
-    }
-}
+# DATABASES = {
+#     'default': {git 
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': config('DB_NAME',default=''),
+#         'USER': config('DB_USER',default=''),
+#         'PASSWORD': config('DB_PASSWORD',default=''),
+#         'HOST': config('DB_HOST',default='localhost'),
+#         'PORT': config('DB_PORT',cast=int)
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
