@@ -1,47 +1,57 @@
 {% load static %}
+<nav class="bg-blue-800 sticky top-0 z-50 shadow">
+  <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16 items-center">
 
-<!-- Navbar -->
-<nav class="bg-blue-800 shadow-lg sticky top-0 z-50">
-  <div class="mx-auto px-6 py-4 flex justify-between items-center">
-    
-    <!-- Logo -->
-    <a href="{% url 'home' %}" class="text-2xl md:text-3xl font-bold text-white tracking-wide">
-      🎉 Event Management
-    </a>
-
-    <!-- Mobile Menu Button -->
-    <button id="mobile-menu-btn" class="text-white text-3xl md:hidden">
-      ☰
-    </button>
-
-    <!-- Links -->
-    <div id="nav-links"
-         class="hidden md:flex space-x-4 md:-translate-x-24 mt-4 md:mt-0 flex-col md:flex-row text-center md:text-left">
-      <a href="{% url 'event-list' %}"
-         class="text-white hover:text-yellow-300 {% if request.path == '/event/events/' %}font-semibold underline{% endif %}">
-        Events List
+      <!-- Logo -->
+      <a href="{% url 'home' %}" class="text-white font-bold text-2xl md:text-3xl">
+        🎉 Event Management
       </a>
-    </div>
 
-    <!-- User Menu -->
-    <div class="flex items-center ml-4 relative hidden md:block">
-      <button id="user-menu-button" class="flex items-center focus:outline-none">
-        <img class="h-8 w-8 rounded-full object-cover"
-             src="{% static 'user_default.png' %}"
-             alt="User avatar">
-      </button>
+      <!-- Desktop menu -->
+      <div class="hidden md:flex space-x-6 items-center">
+        <a href="{% url 'event-list' %}" class="text-white hover:text-yellow-300 {% if request.path == '/event/events/' %}font-semibold underline{% endif %}">Events</a>
+       
+      </div>
 
-      <div id="user-menu"
-           class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden">
-        <p class="text-black text-center font-medium text-xl">{{ user.username }}</p>
-        <form method="post" action="{% url 'sign-out' %}" class="flex justify-center">
-          {% csrf_token %}
-          <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-sm">
-            Logout
-          </button>
-        </form>
+      <!-- User menu -->
+      <div class="hidden md:block relative">
+        <button id="user-button" class="flex items-center focus:outline-none">
+          <img class="h-8 w-8 rounded-full object-cover"
+               src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}{% static 'images/user_default.png' %}{% endif %}"
+               alt="User">
+        </button>
+
+        <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow-lg py-1 z-50">
+          <p class="text-center font-medium mb-2">{{ user.username }}</p>
+          <a href="{% url 'profile' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+          <form method="post" action="{% url 'sign-out' %}">
+            {% csrf_token %}
+            <button class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button id="mobile-button" class="text-white text-3xl focus:outline-none">
+          ☰
+        </button>
       </div>
     </div>
 
+    <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden mt-2 space-y-2 text-center">
+      <a href="{% url 'event-list' %}" class="block text-white hover:text-yellow-300">Events</a>
+      
+      <div class="border-t border-white mt-2 pt-2">
+        <p class="text-white text-center mb-1">{{ user.username }}</p>
+        <a href="{% url 'profile' %}" class="block text-white hover:text-yellow-300 text-center">Profile</a>
+        <form method="post" action="{% url 'sign-out' %}" class="text-center">
+          {% csrf_token %}
+          <button class="block text-white hover:text-yellow-300 mt-1 bg-red-400 mx-auto px-3 py-1 rounded-lg">Logout</button>
+        </form>
+      </div>
+    </div>
   </div>
 </nav>

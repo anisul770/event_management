@@ -5,9 +5,11 @@ from django.db.models import Q,Count
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required,user_passes_test
-from django.contrib.auth.models import User
 from core.templatetags.role_filters import is_admin,is_organizer,is_participant,is_admin_or_organizer
+from django.views.generic import ListView
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 # ----- CATEGORY -----
 
 @login_required
@@ -117,7 +119,7 @@ def event_page(request):
         events = events.filter(category_id=category_filter)
 
     # No property conflict — rename annotationszd
-    events = events.annotate(total_participants=Count('participants'))
+    # events = events.annotate(total_participants=Count('participants'))
     categories = Category.objects.all()
     total_participants = User.objects.count()
     context = {
@@ -177,7 +179,7 @@ def participant_page(request):
         return redirect('participant_page')
 
     # LIST
-    participants = User.objects.prefetch_related('events').all()
+    participants = User.objects.prefetch_related('event_set').all()
     events = Event.objects.select_related('category').all()
 
     return render(request, 'participant.html', {
@@ -190,3 +192,12 @@ def participant_page(request):
 def event_list(request):
     events = Event.objects.select_related('category').all()
     return render(request,'event_list.html',{'events':events})
+
+class EventList(ListView):
+    model = Event
+    template_name = "event_list.html"
+    context_object_name = 'events'
+    
+    def get_queryset(self):
+        return Event.objects.select_related('category').prefetch_related('participants').all()
+    

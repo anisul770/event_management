@@ -8,11 +8,11 @@ def is_admin(user):
 
 @register.filter
 def is_organizer(user):
-    return user.groups.filter(name='Organizer').exists()
+    return user.groups.filter(name__in=['Organizer', 'Admin']).exists()
 
 @register.filter
 def is_participant(user):
-    return user.groups.filter(name='Participants').exists()
+    return user.groups.filter(name__in=['Participants','Organizer', 'Admin']).exists()
 
 @register.filter
 def is_admin_or_organizer(user):

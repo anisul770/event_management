@@ -17,10 +17,8 @@
       {% include "admin/admin_nav.html" %}
     {% elif request.user|is_organizer %}
       {% include "organizer/organizer_nav.html" %}
-    {% elif request.user|is_participant %}
-      {% include "participant/participant_nav.html" %}
     {% else %}
-      {% include "logged_nav.html" %}
+      {% include "participant/participant_nav.html" %}
     {% endif %}
   {% else %}
     {% include "non_logged.html" %}
@@ -93,41 +91,24 @@
 
   <!-- Dropdown Script -->
   <script>
-  const mobileToggle = document.getElementById("mobile-menu-toggle");
-  const mobileMenu = document.getElementById("mobile-menu");
-  const menuButton = document.getElementById("user-menu-button");
-  const adminToggle = document.getElementById("admin-mobile-toggle");
-  const adminMenu = document.getElementById("admin-mobile-menu");
-  const userMenu = document.getElementById("user-menu");
-  const toggleBtn = document.getElementById("mobile-toggle");
-  if (menuButton) {
-      menuButton.addEventListener("click", () => {
-        document.getElementById("user-menu").classList.toggle("hidden");
-      });
+  const mobileButton = document.getElementById('mobile-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  mobileButton.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+
+  const userButton = document.getElementById('user-button');
+  const userMenu = document.getElementById('user-menu');
+  userButton.addEventListener('click', () => {
+    userMenu.classList.toggle('hidden');
+  });
+
+  // Click outside to close user menu
+  document.addEventListener('click', function(event) {
+    if (!userButton.contains(event.target) && !userMenu.contains(event.target)) {
+      userMenu.classList.add('hidden');
     }
-  if (mobileToggle) {
-    mobileToggle.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
-    });
-  }
-   if (adminToggle) {
-    adminToggle.addEventListener("click", () => {
-      adminMenu.classList.toggle("hidden");
-    });
-  }
-  if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
-    });
-  }
-  if (userMenuBtn) {
-    userMenuBtn.addEventListener("click", () => {
-      userMenu.classList.toggle("hidden");
-    });
-  }
-  document.getElementById("mobile-menu-btn").onclick = function () {
-    document.getElementById("nav-links").classList.toggle("hidden");
-  };
+  });
   </script>
 </body>
 </html>

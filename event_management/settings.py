@@ -28,9 +28,10 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = True
 # DEBUG = False
 
-ALLOWED_HOSTS = ['*'] #for render
-# ALLOWED_HOSTS = []
-CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com','http://127.0.0.1:8000']
+AUTH_USER_MODEL = 'users.CustomUser'
+# ALLOWED_HOSTS = ['*'] #for render
+ALLOWED_HOSTS = []
+# CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com','http://127.0.0.1:8000']
 
 # Application definition
 
@@ -43,18 +44,25 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'users.apps.UsersConfig',
-    'event.apps.EventsConfig'
+    'event.apps.EventsConfig',
+    "debug_toolbar"
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # 'whitenoise.middleware.WhiteNoiseMiddleware', #for render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+]
+
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
 ]
 
 ROOT_URLCONF = 'event_management.urls'
@@ -89,28 +97,28 @@ WSGI_APPLICATION = 'event_management.wsgi.application'
 # }
 
 # for render
-DATABASES = {
-    'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://event_management_db_3ajq_user:V5knFLB7xnMfo5NFMg1leLVZBzv3iQo7@dpg-d4pn3qeuk2gs73f8k800-a.oregon-postgres.render.com/event_management_db_3ajq',
-        conn_max_age=600
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         # Replace this value with your local database's connection string.
+#         default='postgresql://event_management_db_3ajq_user:V5knFLB7xnMfo5NFMg1leLVZBzv3iQo7@dpg-d4pn3qeuk2gs73f8k800-a.oregon-postgres.render.com/event_management_db_3ajq',
+#         conn_max_age=600
+#     )
+# }
 
 
 
 # For Postgres
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': config('DB_NAME',default=''),
-#         'USER': config('DB_USER',default=''),
-#         'PASSWORD': config('DB_PASSWORD',default=''),
-#         'HOST': config('DB_HOST',default='localhost'),
-#         'PORT': config('DB_PORT',cast=int)
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME',default=''),
+        'USER': config('DB_USER',default=''),
+        'PASSWORD': config('DB_PASSWORD',default=''),
+        'HOST': config('DB_HOST',default='localhost'),
+        'PORT': config('DB_PORT',cast=int)
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -136,7 +144,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Rome'
 
 USE_I18N = True
 
@@ -175,3 +183,6 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 FRONTEND_URL = 'http://127.0.0.1:8000'
 
 LOGIN_URL = 'sign-in'
+
+LOGIN_REDIRECT_URL ='/'
+LOGOUT_REDIRECT_URL ='/'

@@ -1,63 +1,61 @@
 {% load static %}
-<!-- Navbar -->
-<nav class="bg-blue-800 shadow-lg sticky top-0 z-50">
-  <div class="mx-auto px-6 py-4 flex justify-between items-center">
+<nav class="bg-blue-800 sticky top-0 z-50 shadow">
+  <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16 items-center">
 
-    <!-- Logo -->
-    <a href="{% url 'home' %}" class="text-2xl md:text-3xl font-bold text-white tracking-wide">
-      🎉 Event Management
-    </a>
+      <!-- Logo -->
+      <a href="{% url 'home' %}" class="text-white font-bold text-2xl md:text-3xl">
+        🎉 Event Management
+      </a>
 
-    <!-- Mobile Menu Button -->
-    <button id="mobile-toggle" class="md:hidden text-white text-3xl focus:outline-none">
-      ☰
-    </button>
-
-    <!-- Menu -->
-    <div id="mobile-menu" class="hidden md:flex md:items-center w-full md:w-auto mt-4 md:mt-0">
-
-      <!-- Center Links -->
-      <div class="flex flex-col md:flex-row md:space-x-6 items-center text-center md:text-left mb-4 md:mb-0">
-
-        <a href="{% url 'event_page' %}"
-           class="text-white hover:text-yellow-300 {% if request.path == '/event/events/' %}font-semibold underline{% endif %}">
-          Events
-        </a>
-
-        <a href="{% url 'category_page' %}"
-           class="text-white hover:text-yellow-300 {% if request.path == '/event/categories/' %}font-semibold underline{% endif %}">
-          Categories
-        </a>
-
+      <!-- Desktop menu -->
+      <div class="hidden md:flex space-x-6 items-center">
+        <a href="{% url 'event_page' %}" class="text-white hover:text-yellow-300 {% if request.path == '/event/events/' %}font-semibold underline{% endif %}">Events</a>
+        
+        <a href="{% url 'category_page' %}" class="text-white hover:text-yellow-300 {% if request.path == '/event/categories/' %}font-semibold underline{% endif %}">Categories</a>
+       
       </div>
 
-      <!-- User Menu -->
-      <div class="flex justify-center md:justify-start md:ml-6">
-        <div class="relative">
-          <button id="user-menu-button" class="flex items-center focus:outline-none">
-            <img
-              class="h-8 w-8 rounded-full object-cover"
-              src="{% static 'media/user_default.png' %}"
-              alt="User avatar"
-            />
-          </button>
+      <!-- User menu -->
+      <div class="hidden md:block relative">
+        <button id="user-button" class="flex items-center focus:outline-none">
+          <img class="h-8 w-8 rounded-full object-cover"
+               src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}{% static 'images/user_default.png' %}{% endif %}"
+               alt="User">
+        </button>
 
-          <div id="user-menu"
-               class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden">
-
-            <p class="text-black text-center font-medium text-xl">{{ user.username }}</p>
-
-            <form method="post" action="{% url 'sign-out' %}" class="flex justify-center">
-              {% csrf_token %}
-              <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-sm">
-                Logout
-              </button>
-            </form>
-
-          </div>
+        <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow-lg py-1 z-50">
+          <p class="text-center font-medium mb-2">{{ user.username }}</p>
+          <a href="{% url 'profile' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+          <form method="post" action="{% url 'sign-out' %}">
+            {% csrf_token %}
+            <button class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</button>
+          </form>
         </div>
       </div>
 
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button id="mobile-button" class="text-white text-3xl focus:outline-none">
+          ☰
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden mt-2 space-y-2 text-center">
+      <a href="{% url 'event_page' %}" class="block text-white hover:text-yellow-300">Events</a>
+      
+      <a href="{% url 'category_page' %}" class="block text-white hover:text-yellow-300">Categories</a>
+      
+      <div class="border-t border-white mt-2 pt-2">
+        <p class="text-white text-center mb-1">{{ user.username }}</p>
+        <a href="{% url 'profile' %}" class="block text-white hover:text-yellow-300 text-center">Profile</a>
+        <form method="post" action="{% url 'sign-out' %}" class="text-center">
+          {% csrf_token %}
+          <button class="block text-white hover:text-yellow-300 mt-1 bg-red-400 mx-auto px-3 py-1 rounded-lg">Logout</button>
+        </form>
+      </div>
     </div>
   </div>
 </nav>

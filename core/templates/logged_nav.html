@@ -30,14 +30,14 @@
         <div class="relative">
           <button id="user-menu-button" class="flex items-center focus:outline-none">
             <img class="h-8 w-8 rounded-full object-cover"
-                 src="/media/user_default.png"
+                 src="{{user.profile_image.url}}"
                  alt="User avatar">
           </button>
 
           <div id="user-menu"
                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden">
             <p class="text-black text-center font-medium text-xl">{{ user.username }}</p>
-
+            <a href="{% url "profile" %}">Profile</a>
             <form method="post" action="{% url 'sign-out' %}" class="flex justify-center">
               {% csrf_token %}
               <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-sm">

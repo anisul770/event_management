@@ -90,6 +90,7 @@
     <table class="min-w-full text-sm">
       <thead class="bg-green-100 text-green-900">
         <tr>
+          <th class="py-2 px-4 text-left">Username</th>
           <th class="py-2 px-4 text-left">Name</th>
           <th class="py-2 px-4 text-center">Email</th>
           <th class="py-2 px-4 text-left">Events</th>
@@ -101,6 +102,7 @@
         {% for p in participants %}
           {% if p.groups.first.name != 'Admin' %}
           <tr class="hover:bg-green-50 transition">
+            <td class="py-2 px-4 border-b">{{ p.username}}</td>
             <td class="py-2 px-4 border-b">{{ p.first_name }} {{ p.last_name }}</td>
             <td class="py-2 px-4 border-b text-center">{{ p.email }}</td>
             <td class="py-2 px-4 border-b">
