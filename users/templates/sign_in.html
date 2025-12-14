@@ -6,6 +6,7 @@
                 <div class="px-2 py-1 text-green-500">{{message}}</div>
             {% endfor %}
         {% endif %}
+        <p>If you are registered by Admin check your email for password</p>
         <form method="POST">
             {% csrf_token %}
             {{form}}
