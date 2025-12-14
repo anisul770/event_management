@@ -1,7 +1,12 @@
 import re
-from django.contrib.auth.models import User,Group,Permission
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
+import string
+from django.contrib.auth.models import Group,Permission,AbstractUser
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm,PasswordChangeForm,PasswordResetForm,SetPasswordForm
 from django import forms
+from django.contrib.auth import get_user_model
+from users.models import CustomUser
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 class StyleFormMixin:
     def __init__(self, *args, **kwargs):
@@ -95,3 +100,24 @@ class AssignRoleForm(StyleFormMixin,forms.Form):
         queryset=Group.objects.all(),
         empty_label='Select a Role'
     )
+    
+class EditProfileForm(StyleFormMixin,forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['email','first_name','last_name','bio','profile_image','phone']
+        
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        if phone:
+            if not phone.isdigit():
+                raise forms.ValidationError("Input Only digits")
+        return phone
+    
+class CustomPasswordChangeForm(StyleFormMixin,PasswordChangeForm):
+    pass
+
+class CustomPasswordResetForm(StyleFormMixin,PasswordResetForm):
+    pass
+
+class CustomPasswordResetConfirmForm(StyleFormMixin,SetPasswordForm):
+    pass

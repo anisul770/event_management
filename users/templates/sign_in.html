@@ -9,7 +9,7 @@
         <form method="POST">
             {% csrf_token %}
             {{form}}
-            <div class="text-center text-white mt-5"><button class='bg-blue-500 px-3 py-2 rounded-lg' type="submit">Sign In</button></div>
+            <div class="text-center text-white mt-5"><button class='bg-blue-500 px-3 py-2 rounded-lg' type="submit">Sign In</button><span class='pl-2 text-black'><a href="{% url "password-reset" %}">Forget Password?</a></span></div>
         </form>
     </div>
 {% endblock content %}

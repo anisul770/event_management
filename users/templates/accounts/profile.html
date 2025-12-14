@@ -1,0 +1,73 @@
+{% extends "home.html" %}
+{% load custom_filters %}
+{% block content %}
+<!-- Container -->
+<div class="max-w-5xl mx-auto py-10 px-4">
+
+    <!-- Profile Card -->
+    <div class="bg-white shadow-xl rounded-2xl overflow-hidden">
+
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-indigo-600 to-blue-500 p-6 text-white flex items-center gap-6">
+            <img
+                src="{{profile_image.url}}"
+                alt="Profile"
+                class="w-24 h-24 rounded-full border-4 border-white object-cover"
+            >
+            <div>
+                <h1 class="text-2xl font-bold">
+                    {{ name|default:username }}
+                </h1>
+                <p class="text-sm opacity-90">{{ user.email }}</p>
+                <span class="inline-block mt-2 px-3 py-1 bg-white/20 rounded-full text-xs">
+                    {{ group|default:"User" }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <!-- Left: Info -->
+            <div class="md:col-span-2 bg-gray-50 p-5 rounded-xl">
+                <h2 class="text-lg font-semibold mb-4 text-gray-700">Profile Info</h2>
+
+                <ul class="space-y-3 text-sm text-gray-600">
+                    <li><strong>Username:</strong> {{ username }}</li>
+                    <li><strong>Email:</strong> {{ email }}</li>
+                    <li><strong>Joined:</strong> {{ member_since|humanized_date}}</li>
+                    <li><strong>Last Login:</strong> {{ last_login|humanized_date}}</li>
+                    <li><strong>Phone:</strong> {{ phone }}</li>
+                </ul>
+            </div>
+
+            <!-- Right: Stats & Activity -->
+            <div class="md:col-span-1 space-y-6">
+                <a href="{% url "home" %}"
+                   class="block mt-6 text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition">
+                    Home
+                </a>
+                <a href="{% url "edit_profile" %}"
+                   class="block mt-6 text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition">
+                    Edit Profile
+                </a>
+                <a href="{% url "password_change" %}"
+                   class="block mt-6 text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition">
+                    Reset Password
+                </a>
+            </div>
+
+            <div class="md:col-span-3 bg-gray-50 p-5 rounded-xl">
+                <h2 class="text-lg font-semibold mb-4 text-gray-700">Bio</h2>
+                <p>{{bio}}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <p class="text-center text-xs text-gray-400 mt-6">
+        © {{ now|date:"Y" }} Your Company. All rights reserved.
+    </p>
+
+</div>
+{% endblock content %}
