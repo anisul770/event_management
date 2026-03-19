@@ -18,7 +18,7 @@
 
       <!-- User menu -->
       <div class="hidden md:block relative">
-        <button id="user-button" class="flex items-center focus:outline-none">
+        <button id="user-button" class="flex items-center focus:outline-none cursor-pointer">
           <img class="h-8 w-8 rounded-full object-cover"
                src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}{% static 'images/user_default.png' %}{% endif %}"
                alt="User">

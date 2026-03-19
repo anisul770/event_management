@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm,Passwo
 from django import forms
 from django.contrib.auth import get_user_model
 from users.models import CustomUser
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -81,6 +82,14 @@ class CustomRegistrationForm(StyleFormMixin,forms.ModelForm):
 class LoginForm(StyleFormMixin,AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        
+    error_messages = {
+        "invalid_login": _(
+            "Please enter a correct %(username)s and password. Note that both fields "
+            "fields are case sensitive"
+        ),
+        "inactive": _("This account is inactive."),
+    }
         
 
 class CreateGroupForm(StyleFormMixin,forms.ModelForm):
