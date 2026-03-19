@@ -50,7 +50,7 @@
           {% for e in events %}
           <label class="inline-flex items-center gap-2 p-1 cursor-pointer hover:bg-green-50 rounded-lg">
             <input type="checkbox" name="events" value="{{ e.id }}" 
-                   {% if selected and e in selected.events.all %}checked{% endif %}>
+                   {% if selected and e in selected.event_set.all %}checked{% endif %}>
             <span class="text-sm">{{ e.name }} 
               <span class="text-xs text-gray-400">({{ e.date }})</span>
             </span>

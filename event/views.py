@@ -67,6 +67,7 @@ def event_page(request):
     # EDIT / DELETE
     if 'edit' in request.GET:
         selected = get_object_or_404(Event, id=request.GET['edit'])
+        print(selected.participants.all())
     elif 'delete' in request.GET:
         delete_item = get_object_or_404(Event, id=request.GET['delete'])
 
@@ -122,6 +123,7 @@ def event_page(request):
     # events = events.annotate(total_participants=Count('participants'))
     categories = Category.objects.all()
     total_participants = User.objects.count()
+    participants = User.objects.all()
     context = {
         'events': events,
         'categories': categories,
@@ -130,6 +132,7 @@ def event_page(request):
         'search': search,
         'category_filter': category_filter,
         'total_participants': total_participants,
+        'participants':participants
     }
     return render(request, 'event.html', context)
 
